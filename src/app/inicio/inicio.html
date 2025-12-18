@@ -15,24 +15,31 @@
 <section>
   <h2>Livros em destaque</h2>
 
-  <div *ngIf="carregando">Carregando livros...</div>
+  @if (carregando) {
+    <div>Carregando livros...</div>
+  }
 
-  <div *ngIf="erro" class="erro">{{ erro }}</div>
+  @if (erro) {
+    <div style="color: #b00020;">{{ erro }}</div>
+  }
 
-  <div *ngIf="!carregando && !erro && livros.length === 0">
+  @if (!carregando && !erro && livros.length === 0) {
     <p>Nenhum livro cadastrado no momento.</p>
-  </div>
+  }
 
-  <ul *ngIf="!carregando && !erro && livros.length > 0">
-    <li *ngFor="let livro of livros">
-      <h3>{{ livro.titulo }}</h3>
-      <p><strong>Autor:</strong> {{ livro.autor }}</p>
-      <p><strong>Gênero:</strong> {{ livro.genero }}</p>
-      <p><strong>Status:</strong> {{ livro.disponivel ? 'Disponível para reserva' : 'Indisponível' }}</p>
-      <!-- Corrigido: rota de detalhes -->
-      <a [routerLink]="['/livro', livro.id]">Ver detalhes</a>
-    </li>
-  </ul>
+  @if (!carregando && !erro && livros.length > 0) {
+    <ul>
+      @for (livro of livros; track livro.id) {
+        <li>
+          <h3>{{ livro.titulo }}</h3>
+          <p><strong>Autor:</strong> {{ livro.autor }}</p>
+          <p><strong>Gênero:</strong> {{ livro.genero }}</p>
+          <p><strong>Status:</strong> {{ livro.disponivel ? 'Disponível para reserva' : 'Indisponível' }}</p>
+          <a [routerLink]="['/livro', livro.id]">Ver detalhes</a>
+        </li>
+      }
+    </ul>
+  }
 </section>
 
 <hr />
@@ -41,15 +48,9 @@
   <h2>Acesso rápido</h2>
   <nav>
     <ul>
-      <!-- Corrigido: rota catálogo -->
       <li><a routerLink="/catalogo">Ver catálogo completo</a></li>
       <li><a routerLink="/login">Entrar</a></li>
-      <!-- Corrigido: rota cadastro -->
       <li><a routerLink="/cadastro-usuario">Criar conta</a></li>
     </ul>
   </nav>
 </section>
-
-<style>
-  .erro { color: #b00020; }
-</style>

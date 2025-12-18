@@ -1,0 +1,39 @@
+<section>
+  <h2>Meu Carrinho</h2>
+
+  @if (carregando) {
+    <div>Carregando itens do carrinho...</div>
+  }
+
+  @if (erro) {
+    <div style="color: #b00020;">{{ erro }}</div>
+  }
+
+  @if (!carregando && !erro && itens.length === 0) {
+    <p>Seu carrinho está vazio.</p>
+  }
+
+  @if (!carregando && !erro && itens.length > 0) {
+    <ul>
+      @for (item of itens; track item.id) {
+        <li>
+          <strong>{{ item.titulo }}</strong> — {{ item.autor }} ({{ item.genero }})
+          <button (click)="remover(item.id)">Remover</button>
+        </li>
+      }
+    </ul>
+  }
+</section>
+
+<hr />
+
+<section>
+  <h2>Acesso rápido</h2>
+  <nav>
+    <ul>
+      <li><a routerLink="/catalogo">Ver catálogo completo</a></li>
+      <li><a routerLink="/inicio">Página inicial</a></li>
+      <li><a routerLink="/login">Entrar</a></li>
+    </ul>
+  </nav>
+</section>

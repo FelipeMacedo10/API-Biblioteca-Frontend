@@ -1,30 +1,37 @@
-<!-- login.html -->
-<h1>Login</h1>
-<p>Entre com seu email e senha para acessar o sistema.</p>
+<div>
+  <h2>Biblioteca Virtual</h2>
+  <p>Faça login para continuar</p>
 
-<form (ngSubmit)="fazerLogin()">
+  <form (ngSubmit)="login()" #loginForm="ngForm">
+    <div>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" [(ngModel)]="email" required placeholder="Digite seu email">
+    </div>
+
+    <div>
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" name="senha" [(ngModel)]="senha" required placeholder="Digite sua senha">
+    </div>
+
+    @if (erro) {
+    <div style="color: red; background: #ffeaea; padding: 10px; margin: 10px 0;">
+      {{ erro }}
+    </div>
+    }
+
+    <button type="submit" [disabled]="!loginForm.form.valid || carregando">
+      @if (carregando) {
+      <span>Aguarde...</span>
+      } @else {
+      Entrar
+      }
+    </button>
+  </form>
+
   <div>
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" [(ngModel)]="email" required />
+    <p>Não tem uma conta?</p>
+    <button routerLink="/cadastro-usuario">
+      Criar nova conta
+    </button>
   </div>
-
-  <div>
-    <label for="senha">Senha</label>
-    <input type="password" id="senha" name="senha" [(ngModel)]="senha" required />
-  </div>
-
-  <button type="submit" [disabled]="!email || !senha">Entrar</button>
-</form>
-
-<div *ngIf="erro" class="erro">{{ erro }}</div>
-
-<hr />
-
-<p>
-  Ainda não tem conta?
-  <a href="/cadastro-usuario">Cadastre-se aqui</a>
-</p>
-
-<style>
-  .erro { color: #b00020; margin-top: 8px; }
-</style>
+</div>
