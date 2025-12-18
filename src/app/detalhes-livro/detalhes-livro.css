@@ -1,0 +1,130 @@
+/* ===================== */
+/* Variáveis de tema */
+/* ===================== */
+:root {
+  --roxo-principal: #4a148c;
+  --roxo-secundario: #6a1b9a;
+  --cinza-texto: #444;
+  --cinza-claro: #f5f5f5;
+  --borda: #e0e0e0;
+  --erro: #b00020;
+  --sucesso: #2e7d32;
+}
+
+h1 {
+  color: var(--roxo-principal);
+  margin-bottom: 24px;
+  font-size: 20px;
+}
+
+div[ng-reflect-ng-if],
+div:not(:empty) {
+  background-color: #ffffff;
+  padding: 28px;
+  border-radius: 12px;
+  border: 1px solid var(--borda);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  margin-bottom: 32px;
+}
+
+p {
+  font-size: 10,5px;
+  color: var(--cinza-texto);
+  margin-bottom: 8px;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #ccc, transparent);
+  margin: 32px 0;
+}
+
+h2 {
+  color: var(--roxo-secundario);
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+
+form {
+  background-color: var(--cinza-claro);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--borda);
+  max-width: 420px;
+}
+
+form div {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+input[type="date"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--borda);
+  font-size: 10px;
+}
+
+small {
+  color: var(--erro);
+  display: block;
+  margin-top: 6px;
+}
+
+button {
+  background-color: var(--roxo-principal);
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--roxo-secundario);
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.erro {
+  color: var(--erro);
+  background-color: #fdecea;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.sucesso {
+  color: var(--sucesso);
+  background-color: #e8f5e9;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 16px;
+  }
+
+  form {
+    padding: 16px;
+  }
+}

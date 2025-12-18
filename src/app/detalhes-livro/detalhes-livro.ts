@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Livro } from '../models/livro';
 import { LivroService } from '../services/livro-service';
 import { ReservaService } from '../services/reserva-service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-detalhes-livro',
@@ -25,7 +26,8 @@ export class DetalhesLivro implements OnInit {
     private livroService: LivroService,
     private reservaService: ReservaService,
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cd: ChangeDetectorRef
   ) {
     this.formReserva = this.fb.group({
       data_retirada: ['', [Validators.required, this.validarDataNaoPassada]]
@@ -33,18 +35,23 @@ export class DetalhesLivro implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!id) {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    console.log('ID recebido da rota:', idParam);
+    if (!idParam || isNaN(Number(idParam))) {
       this.erro = 'Livro não encontrado.';
       return;
     }
+
+    const id = Number(idParam);
+
     this.carregando = true;
     this.livroService.obterLivroPorId(id).subscribe({
-      next: res => { this.livro = res; this.carregando = false; },
+      next: res => { this.livro = res; this.carregando = false; this.cd.detectChanges(); },
       error: err => {
         console.error('Erro ao carregar livro', err);
         this.erro = 'Não foi possível carregar o livro.';
         this.carregando = false;
+        this.cd.detectChanges();
       }
     });
   }

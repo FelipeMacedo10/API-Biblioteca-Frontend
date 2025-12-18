@@ -1,21 +1,19 @@
-// inicio.ts
 import { Component, OnInit } from '@angular/core';
-import { Livro } from '../models/livro';
-import { LivroService } from '../services/livro-service';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { LivroService } from '../services/livro-service';
+import { Livro } from '../models/livro';
+import { RouterModule } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
-  selector: 'app-inicio',
+  selector: 'app-catalogo',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './inicio.html',
-  styleUrls: ['./inicio.css']
+  templateUrl: './catalogo.html',
+  styleUrls: ['./catalogo.css']
 })
-export class Inicio implements OnInit {
+export class Catalogo implements OnInit {
   livros: Livro[] = [];
-  totalLivros = 0;
   carregando = false;
   erro = '';
 
@@ -26,13 +24,12 @@ export class Inicio implements OnInit {
     this.livroService.obterLivros().subscribe({
       next: res => {
         this.livros = res;
-        this.totalLivros = res.length;
         this.carregando = false;
         this.cd.detectChanges();
       },
       error: err => {
-        console.error('Erro ao carregar livros', err);
-        this.erro = 'Não foi possível carregar os livros. Tente novamente mais tarde.';
+        console.error('Erro ao carregar catálogo', err);
+        this.erro = 'Não foi possível carregar o catálogo de livros.';
         this.carregando = false;
         this.cd.detectChanges();
       }

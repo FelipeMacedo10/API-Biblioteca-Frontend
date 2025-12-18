@@ -4,7 +4,7 @@
 <div *ngIf="carregando">Carregando informações do livro...</div>
 <div *ngIf="erro" class="erro">{{ erro }}</div>
 
-<div *ngIf="livro && !carregando && !erro">
+<div *ngIf="livro">
   <p><strong>Título:</strong> {{ livro.titulo }}</p>
   <p><strong>Autor:</strong> {{ livro.autor }}</p>
   <p><strong>Gênero:</strong> {{ livro.genero }}</p>
