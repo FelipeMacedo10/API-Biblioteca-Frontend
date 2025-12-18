@@ -1,0 +1,37 @@
+<!-- detalhes-livro.html -->
+<h1>Detalhes do livro</h1>
+
+<div *ngIf="carregando">Carregando informações do livro...</div>
+<div *ngIf="erro" class="erro">{{ erro }}</div>
+
+<div *ngIf="livro && !carregando && !erro">
+  <p><strong>Título:</strong> {{ livro.titulo }}</p>
+  <p><strong>Autor:</strong> {{ livro.autor }}</p>
+  <p><strong>Gênero:</strong> {{ livro.genero }}</p>
+  <p><strong>Status:</strong> {{ livro.disponivel ? 'Disponível' : 'Indisponível' }}</p>
+
+  <hr />
+
+  <h2>Reservar livro</h2>
+
+  <form [formGroup]="formReserva" (ngSubmit)="fazerReserva()">
+    <div>
+      <label for="data_retirada">Data de Retirada</label>
+      <input type="date" id="data_retirada" formControlName="data_retirada" />
+      <div *ngIf="formReserva.get('data_retirada')?.invalid && formReserva.get('data_retirada')?.touched">
+        <small>Data de retirada é obrigatória e não pode ser no passado.</small>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="formReserva.invalid || !livro.disponivel">
+      Fazer reserva
+    </button>
+  </form>
+
+  <div *ngIf="mensagemSucesso" class="sucesso">{{ mensagemSucesso }}</div>
+</div>
+
+<style>
+  .erro { color: #b00020; }
+  .sucesso { color: #2e7d32; margin-top: 8px; }
+</style>

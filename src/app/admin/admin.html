@@ -1,0 +1,135 @@
+<h1>Painel do Administrador</h1>
+
+<!-- ===================== -->
+<!-- Cadastro de Livro -->
+<!-- ===================== -->
+<section>
+  <h2>Cadastrar novo livro</h2>
+
+  <form (ngSubmit)="adicionarLivro()">
+    <div>
+      <label for="titulo">Título</label>
+      <input
+        type="text"
+        id="titulo"
+        name="titulo"
+        [(ngModel)]="novoLivro.titulo"
+        required
+      />
+    </div>
+
+    <div>
+      <label for="autor">Autor</label>
+      <input
+        type="text"
+        id="autor"
+        name="autor"
+        [(ngModel)]="novoLivro.autor"
+        required
+      />
+    </div>
+
+    <div>
+      <label for="genero">Gênero</label>
+      <input
+        type="text"
+        id="genero"
+        name="genero"
+        [(ngModel)]="novoLivro.genero"
+        required
+      />
+    </div>
+
+    <div>
+      <label>
+        <input
+          type="checkbox"
+          [(ngModel)]="novoLivro.disponivel"
+          name="disponivel"
+        />
+        Disponível
+      </label>
+    </div>
+
+    <button type="submit">Cadastrar Livro</button>
+  </form>
+
+  <!-- Feedback -->
+  <p *ngIf="mensagemSucesso" class="sucesso">{{ mensagemSucesso }}</p>
+  <p *ngIf="erro" class="erro">{{ erro }}</p>
+</section>
+
+<hr />
+
+<!-- ===================== -->
+<!-- Lista de Livros -->
+<!-- ===================== -->
+<section>
+  <h2>Livros cadastrados</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Autor</th>
+        <th>Gênero</th>
+        <th>Status</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let livro of livros">
+        <td>{{ livro.titulo }}</td>
+        <td>{{ livro.autor }}</td>
+        <td>{{ livro.genero }}</td>
+        <td>{{ livro.disponivel ? 'Disponível' : 'Indisponível' }}</td>
+        <td>
+          <button (click)="excluirLivro(livro.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<hr />
+
+<!-- ===================== -->
+<!-- Lista de Usuários -->
+<!-- ===================== -->
+<section>
+  <h2>Usuários cadastrados</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Tipo</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let usuario of usuarios">
+        <td>{{ usuario.nome }}</td>
+        <td>{{ usuario.email }}</td>
+        <td>{{ usuario.tipo }}</td>
+        <td>
+          <button (click)="excluirUsuario(usuario.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<style>
+  .erro {
+    color: #b00020;
+    margin-top: 8px;
+  }
+  .sucesso {
+    color: #2e7d32;
+    margin-top: 8px;
+  }
+</style>

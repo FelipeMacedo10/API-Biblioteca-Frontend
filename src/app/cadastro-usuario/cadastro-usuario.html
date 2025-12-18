@@ -1,0 +1,57 @@
+<h1>Cadastro de Usuário</h1>
+
+<form (ngSubmit)="cadastrar()">
+  <div>
+    <label for="nome">Nome</label>
+    <input
+      type="text"
+      id="nome"
+      name="nome"
+      [(ngModel)]="nome"
+      required
+    />
+  </div>
+
+  <div>
+    <label for="email">Email</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      [(ngModel)]="email"
+      required
+    />
+  </div>
+
+  <div>
+    <label for="senha">Senha</label>
+    <input
+      type="password"
+      id="senha"
+      name="senha"
+      [(ngModel)]="senha"
+      required
+      minlength="6"
+    />
+    <small *ngIf="senha.length > 0 && senha.length < 6" class="erro">
+      A senha deve ter pelo menos 6 caracteres.
+    </small>
+  </div>
+
+  <button type="submit" [disabled]="!nome || !email || !senha">Cadastrar</button>
+</form>
+
+<!-- Mensagens de feedback -->
+<p *ngIf="mensagemSucesso" class="sucesso">{{ mensagemSucesso }}</p>
+<p *ngIf="erro" class="erro">{{ erro }}</p>
+
+<style>
+  .erro {
+    color: #b00020;
+    margin-top: 8px;
+  }
+  .sucesso {
+    color: #2e7d32;
+    margin-top: 8px;
+  }
+</style>
