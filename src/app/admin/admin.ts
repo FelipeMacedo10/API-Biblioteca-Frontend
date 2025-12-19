@@ -6,6 +6,7 @@ import { Usuario } from '../models/usuario';
 import { LivroService } from '../services/livro-service';
 import { UsuarioService } from '../services/usuario-service';
 import { RouterModule } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-admin',
@@ -30,7 +31,8 @@ export class Admin implements OnInit {
 
   constructor(
     private livroService: LivroService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -40,20 +42,22 @@ export class Admin implements OnInit {
 
   carregarLivros(): void {
     this.livroService.obterLivros().subscribe({
-      next: (res: Livro[]) => this.livros = res,
+      next: (res: Livro[]) => {this.livros = res; this.cd.detectChanges();}, 
       error: (err: any) => {
         console.error('Erro ao carregar livros', err);
         this.erro = 'Não foi possível carregar os livros.';
+        this.cd.detectChanges();
       }
     });
   }
 
   carregarUsuarios(): void {
     this.usuarioService.obterUsuarios().subscribe({
-      next: (res: Usuario[]) => this.usuarios = res,
+      next: (res: Usuario[]) => {this.usuarios = res; this.cd.detectChanges();},
       error: (err: any) => {
         console.error('Erro ao carregar usuários', err);
         this.erro = 'Não foi possível carregar os usuários.';
+        this.cd.detectChanges();
       }
     });
   }
@@ -64,20 +68,23 @@ export class Admin implements OnInit {
         this.mensagemSucesso = 'Livro cadastrado com sucesso!';
         this.carregarLivros();
         this.novoLivro = { id: 0, titulo: '', autor: '', genero: '', disponivel: true };
+        this.cd.detectChanges();
       },
       error: (err: any) => {
         console.error('Erro ao cadastrar livro', err);
         this.erro = 'Não foi possível cadastrar o livro.';
+        this.cd.detectChanges();
       }
     });
   }
 
   excluirLivro(id: number): void {
     this.livroService.excluirLivro(id).subscribe({
-      next: () => this.carregarLivros(),
+      next: () => {this.carregarLivros(); this.cd.detectChanges();},
       error: (err: any) => {
         console.error('Erro ao excluir livro', err);
         this.erro = 'Não foi possível excluir o livro.';
+        this.cd.detectChanges();
       }
     });
   }
@@ -90,14 +97,14 @@ export class Admin implements OnInit {
       return;
     } else {
       this.usuarioService.excluirUsuario(id).subscribe({
-        next: () => this.carregarUsuarios(),
+        next: () => {this.carregarUsuarios(); this.cd.detectChanges();},
         error: (err: any) => {
           console.error('Erro ao excluir usuário', err);
           this.erro = 'Não foi possível excluir o usuário.';
+          this.cd.detectChanges();
         }
       });
     }
-<<<<<<< HEAD
   }
 
   tornarDisponivel(id: number): void {
@@ -105,9 +112,11 @@ export class Admin implements OnInit {
       next: () => {
         const livro = this.livros.find(l => l.id === id);
         if (livro) livro.disponivel = true;
+        this.cd.detectChanges();
       },
       error: err => {
         console.error('Erro ao atualizar livro', err);
+        this.cd.detectChanges();
   
         if (err.error && err.error.multa) {
           alert(`Este livro está atrasado. O usuário deve pagar R$${err.error.multa},00.`);
