@@ -97,6 +97,7 @@ export class Admin implements OnInit {
         }
       });
     }
+<<<<<<< HEAD
   }
 
   tornarDisponivel(id: number): void {
