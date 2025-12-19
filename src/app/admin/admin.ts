@@ -5,11 +5,12 @@ import { Livro } from '../models/livro';
 import { Usuario } from '../models/usuario';
 import { LivroService } from '../services/livro-service';
 import { UsuarioService } from '../services/usuario-service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './admin.html',
   styleUrls: ['./admin.css']
 })
@@ -30,7 +31,7 @@ export class Admin implements OnInit {
   constructor(
     private livroService: LivroService,
     private usuarioService: UsuarioService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.carregarLivros();
@@ -81,13 +82,40 @@ export class Admin implements OnInit {
     });
   }
 
-  excluirUsuario(id: number): void {
-    this.usuarioService.excluirUsuario(id).subscribe({
-      next: () => this.carregarUsuarios(),
-      error: (err: any) => {
-        console.error('Erro ao excluir usuário', err);
-        this.erro = 'Não foi possível excluir o usuário.';
+  excluirUsuario(id: number | undefined): void {
+
+    if (!id) {
+      console.error('ID do usuário não encontrado');
+      alert('Não foi possível excluir: ID do usuário não encontrado');
+      return;
+    } else {
+      this.usuarioService.excluirUsuario(id).subscribe({
+        next: () => this.carregarUsuarios(),
+        error: (err: any) => {
+          console.error('Erro ao excluir usuário', err);
+          this.erro = 'Não foi possível excluir o usuário.';
+        }
+      });
+    }
+  }
+
+  tornarDisponivel(id: number): void {
+    this.livroService.tornarDisponivel(id).subscribe({
+      next: () => {
+        const livro = this.livros.find(l => l.id === id);
+        if (livro) livro.disponivel = true;
+      },
+      error: err => {
+        console.error('Erro ao atualizar livro', err);
+  
+        if (err.error && err.error.multa) {
+          alert(`Este livro está atrasado. O usuário deve pagar R$${err.error.multa},00.`);
+        } else {
+          alert('Não foi possível atualizar o livro.');
+        }
       }
     });
   }
+  
+  
 }

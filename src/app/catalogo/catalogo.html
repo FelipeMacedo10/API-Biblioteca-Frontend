@@ -1,24 +1,27 @@
 <h1>Catálogo de Livros</h1>
 
-<div *ngIf="carregando">Carregando catálogo...</div>
-<div *ngIf="erro" class="erro">{{ erro }}</div>
+@if (carregando) {
+  <div>Carregando catálogo...</div>
+}
 
-<div *ngIf="!carregando && !erro && livros.length === 0">
+@if (erro) {
+  <div style="color: #b00020;">{{ erro }}</div>
+}
+
+@if (!carregando && !erro && livros.length === 0) {
   <p>Nenhum livro cadastrado no momento.</p>
-</div>
+}
 
-<ul *ngIf="!carregando && !erro && livros.length > 0">
-  <li *ngFor="let livro of livros">
-    <h3>{{ livro.titulo }}</h3>
-    <p><strong>Autor:</strong> {{ livro.autor }}</p>
-    <p><strong>Gênero:</strong> {{ livro.genero }}</p>
-    <p><strong>Status:</strong> {{ livro.disponivel ? 'Disponível' : 'Indisponível' }}</p>
-    <a [routerLink]="['/livro', livro.id]">Ver detalhes</a>
-  </li>
-</ul>
-
-<style>
-  .erro { color: #b00020; }
-  ul { list-style: none; padding: 0; }
-  li { margin-bottom: 16px; border-bottom: 1px solid #ccc; padding-bottom: 8px; }
-</style>
+@if (!carregando && !erro && livros.length > 0) {
+  <ul style="list-style: none; padding: 0;">
+    @for (livro of livros; track livro.id) {
+      <li style="margin-bottom: 16px; border-bottom: 1px solid #ccc; padding-bottom: 8px;">
+        <h3>{{ livro.titulo }}</h3>
+        <p><strong>Autor:</strong> {{ livro.autor }}</p>
+        <p><strong>Gênero:</strong> {{ livro.genero }}</p>
+        <p><strong>Status:</strong> {{ livro.disponivel ? 'Disponível' : 'Indisponível' }}</p>
+        <a [routerLink]="['/livro', livro.id]">Ver detalhes</a>
+      </li>
+    }
+  </ul>
+}

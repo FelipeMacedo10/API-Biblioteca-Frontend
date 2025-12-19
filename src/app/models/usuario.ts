@@ -1,5 +1,5 @@
 export interface Usuario {
-  id: number;
+  id?: number;
   nome: string;
   email: string;
   senha?: string;
@@ -9,4 +9,9 @@ export interface Usuario {
 export enum TipoUsuario {
   USER = 'USER',
   ADMIN = 'ADMIN'
+}
+
+export interface LoginRequest {
+  email: string;
+  senha: string;
 }

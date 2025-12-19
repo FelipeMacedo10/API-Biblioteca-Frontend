@@ -21,6 +21,7 @@ export class DetalhesLivro implements OnInit {
   mensagemSucesso = '';
   carregando = false;
   erro = '';
+  usuarioLogado = false;
 
   constructor(
     private livroService: LivroService,
@@ -45,6 +46,8 @@ export class DetalhesLivro implements OnInit {
     const id = Number(idParam);
 
     this.carregando = true;
+
+    this.usuarioLogado = localStorage.getItem('logado') === 'true';
     this.livroService.obterLivroPorId(id).subscribe({
       next: res => { this.livro = res; this.carregando = false; this.cd.detectChanges(); },
       error: err => {
@@ -59,12 +62,16 @@ export class DetalhesLivro implements OnInit {
   fazerReserva(): void {
     if (!this.livro || this.formReserva.invalid) return;
 
-    const usuario_id = Number(localStorage.getItem('usuario_id'));
-    const logado = localStorage.getItem('logado') === 'true';
-    if (!logado || !usuario_id) {
+    if (!this.livro.disponivel) { this.erro = 'Este livro já está reservado e indisponível.'; return; }
+
+    const usuarioIdStr = localStorage.getItem('usuario_id');
+    const usuario_id = usuarioIdStr ? Number(usuarioIdStr) : null;
+
+    if (!this.usuarioLogado || usuario_id === null) {
       this.erro = 'Você precisa estar logado para reservar.';
       return;
     }
+
 
     const reserva = {
       id: 0,
@@ -76,6 +83,7 @@ export class DetalhesLivro implements OnInit {
     this.reservaService.criarReserva(reserva).subscribe({
       next: () => {
         this.mensagemSucesso = 'Reserva criada com sucesso!';
+        this.livro = { ...this.livro!, disponivel: false };
       },
       error: err => {
         console.error('Erro ao criar reserva', err);

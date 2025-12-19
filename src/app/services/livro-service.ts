@@ -37,4 +37,11 @@ export class LivroService {
   excluirLivro(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  tornarDisponivel(id: number) {
+    return this.http.put(`${this.apiUrl}/${id}/disponivel`, {});
+  }
+  
+  
+  
 }

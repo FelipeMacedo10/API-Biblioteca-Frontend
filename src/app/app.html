@@ -1,64 +1,76 @@
-<!-- ===================== -->
+ <!-- ===================== -->
 <!-- Cabeçalho / Menu -->
 <!-- ===================== -->
 <header>
-    <h1>📚 Livraria Online</h1>
-  
-    <nav>
-      <ul>
-        <!-- Visível para todos -->
+  <h1>
+    <img src="assets/logo.png" alt="Logo da Livraria Online" class="logo">
+    Livraria Online
+  </h1>
+
+  <nav>
+    <ul>
+      <!-- Visível para todos -->
+      <li>
+        <a routerLink="/inicio">Início</a>
+      </li>
+
+      <li>
+        <a routerLink="/catalogo">Catálogo</a>
+      </li>
+
+      <!-- Apenas usuários NÃO logados -->
+      @if (!isLoggedIn()) {
         <li>
-          <a routerLink="/inicio">Início</a>
-        </li>
-  
-        <li>
-          <a routerLink="/catalogo">Catálogo</a>
-        </li>
-  
-        <!-- Apenas usuários NÃO logados -->
-        <li *ngIf="!isLoggedIn()">
           <a routerLink="/login">Login</a>
         </li>
-  
-        <li *ngIf="!isLoggedIn()">
+        <li>
           <a routerLink="/cadastro-usuario">Cadastro</a>
         </li>
-  
-        <!-- Apenas usuários logados -->
-        <li *ngIf="isLoggedIn()">
+      }
+
+      <!-- Apenas usuários logados -->
+      @if (isLoggedIn()) {
+        <li>
           <a routerLink="/carrinho">Carrinho</a>
         </li>
-  
+
         <!-- Apenas ADMIN -->
-        <li *ngIf="isLoggedIn() && isAdmin()">
-          <a routerLink="/admin">Painel Admin</a>
-        </li>
-  
+        @if (isAdmin()) {
+          <li>
+            <a routerLink="/admin">Painel Admin</a>
+          </li>
+        }
+
         <!-- Logout -->
-        <li *ngIf="isLoggedIn()">
+        <li>
           <button (click)="logout()">Sair</button>
         </li>
-      </ul>
-    </nav>
-  </header>
-  
-  <hr />
-  
-  <!-- ===================== -->
-  <!-- Conteúdo das páginas -->
-  <!-- ===================== -->
-  <main>
-    <router-outlet></router-outlet>
-  </main>
-  
-  <hr />
-  
-  <!-- ===================== -->
-  <!-- Rodapé -->
-  <!-- ===================== -->
-  <footer>
-    <p>
-      &copy; {{ anoAtual }} — Livraria Online  
-      <span *ngIf="isLoggedIn()"> | Usuário logado</span>
-    </p>
-  </footer>
+      }
+    </ul>
+  </nav>
+</header>
+
+<hr />
+
+<!-- ===================== -->
+<!-- Conteúdo das páginas -->
+<!-- ===================== -->
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<hr />
+
+<!-- ===================== -->
+<!-- Rodapé -->
+<!-- ===================== -->
+<footer>
+  <p>
+    &copy; {{ anoAtual }} — Livraria Online
+    @if (isLoggedIn()) {
+      <span> | Usuário logado</span>
+    } @else {
+      <span> | Usuário Deslogado</span>
+    }
+  </p>
+</footer>

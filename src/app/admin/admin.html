@@ -9,44 +9,22 @@
   <form (ngSubmit)="adicionarLivro()">
     <div>
       <label for="titulo">Título</label>
-      <input
-        type="text"
-        id="titulo"
-        name="titulo"
-        [(ngModel)]="novoLivro.titulo"
-        required
-      />
+      <input type="text" id="titulo" name="titulo" [(ngModel)]="novoLivro.titulo" required />
     </div>
 
     <div>
       <label for="autor">Autor</label>
-      <input
-        type="text"
-        id="autor"
-        name="autor"
-        [(ngModel)]="novoLivro.autor"
-        required
-      />
+      <input type="text" id="autor" name="autor" [(ngModel)]="novoLivro.autor" required />
     </div>
 
     <div>
       <label for="genero">Gênero</label>
-      <input
-        type="text"
-        id="genero"
-        name="genero"
-        [(ngModel)]="novoLivro.genero"
-        required
-      />
+      <input type="text" id="genero" name="genero" [(ngModel)]="novoLivro.genero" required />
     </div>
 
     <div>
       <label>
-        <input
-          type="checkbox"
-          [(ngModel)]="novoLivro.disponivel"
-          name="disponivel"
-        />
+        <input type="checkbox" [(ngModel)]="novoLivro.disponivel" name="disponivel" />
         Disponível
       </label>
     </div>
@@ -55,8 +33,13 @@
   </form>
 
   <!-- Feedback -->
-  <p *ngIf="mensagemSucesso" class="sucesso">{{ mensagemSucesso }}</p>
-  <p *ngIf="erro" class="erro">{{ erro }}</p>
+  @if (mensagemSucesso) {
+  <p style="color: #2e7d32; margin-top: 8px;">{{ mensagemSucesso }}</p>
+  }
+
+  @if (erro) {
+  <p style="color: #b00020; margin-top: 8px;">{{ erro }}</p>
+  }
 </section>
 
 <hr />
@@ -79,15 +62,21 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let livro of livros">
+      @for (livro of livros; track livro.id) {
+      <tr>
         <td>{{ livro.titulo }}</td>
         <td>{{ livro.autor }}</td>
         <td>{{ livro.genero }}</td>
         <td>{{ livro.disponivel ? 'Disponível' : 'Indisponível' }}</td>
         <td>
           <button (click)="excluirLivro(livro.id)">Excluir</button>
+          @if (!livro.disponivel) {
+            <button (click)="tornarDisponivel(livro.id)"> Tornar disponível </button>
+          }
         </td>
       </tr>
+
+      }
     </tbody>
   </table>
 </section>
@@ -111,7 +100,8 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let usuario of usuarios">
+      @for (usuario of usuarios; track usuario.id) {
+      <tr>
         <td>{{ usuario.nome }}</td>
         <td>{{ usuario.email }}</td>
         <td>{{ usuario.tipo }}</td>
@@ -119,17 +109,7 @@
           <button (click)="excluirUsuario(usuario.id)">Excluir</button>
         </td>
       </tr>
+      }
     </tbody>
   </table>
 </section>
-
-<style>
-  .erro {
-    color: #b00020;
-    margin-top: 8px;
-  }
-  .sucesso {
-    color: #2e7d32;
-    margin-top: 8px;
-  }
-</style>
